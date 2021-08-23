@@ -3,7 +3,6 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const path = require('path');
 const notes = require('./db/db.json');
-// const db = require('../../index')
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
