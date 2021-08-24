@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const path = require('path');
-const notes = require('./db/db.json');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 
@@ -19,12 +18,14 @@ app.get('/notes', (req, res) => {
   res.sendFile(path.join(__dirname, './public/notes.html'));
 });
 
-app.get('/api/notes', (req, res) => res.json(notes));
+app.get('/api/notes', (req, res) => {
+  res.json(JSON.parse(fs.readFileSync("./db/db.json", "utf8")))
+});
 
 
 app.post('/api/notes', (req, res) => {
 
-  console.info(`${req.method} request received to add a review`);
+  console.info(`${req.method} request received!`);
   const { title, text, noteId } = req.body;
 
 
@@ -50,8 +51,8 @@ app.post('/api/notes', (req, res) => {
         : console.log(
           `New note successfully added!` 
         );
+        res.json(newNote)
     })
-    res.json(readNotes)
   })
 })
 
